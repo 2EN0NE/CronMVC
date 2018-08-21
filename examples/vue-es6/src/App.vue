@@ -1,17 +1,19 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="../../../assets/logo.png">
-    <HelloWorld msg="开始吧"/>
+    <h1>The Simple Cron Resolver</h1>
+    <CronResolver/>
+    <footer>designed and coded by 2EN0NE</footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CronResolver from './components/CronResolver.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    CronResolver
   }
 }
 </script>
