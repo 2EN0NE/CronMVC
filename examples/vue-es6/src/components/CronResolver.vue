@@ -39,7 +39,7 @@ export default {
       monthText: "",
       weekText: "",
       yearText: "",
-      cronArraySize: 0,
+      cronArraySize: 0
     };
   },
   computed: {
@@ -52,7 +52,7 @@ export default {
           this.dayText,
           this.monthText,
           this.weekText,
-          this.yearText,
+          this.yearText
         ]
           .join(" ")
           .trim();
@@ -67,9 +67,7 @@ export default {
           this.dayText = fields[this.cronArraySize - 4];
           this.hourText = fields[this.cronArraySize - 5];
           this.minuteText = fields[this.cronArraySize - 6];
-          if (this.isSpringStyle()) {
-            this.secondText == fields[this.cronArraySize - 7];
-          }
+          this.secondText = this.isSpringStyle() ? fields[this.cronArraySize - 7] : "";
         }
       }
     }

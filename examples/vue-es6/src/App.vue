@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="../../../assets/logo.png">
     <h1>The Simple Cron Resolver</h1>
     <CronResolver/>
     <footer>designed and coded by 2EN0NE</footer>
