@@ -6,20 +6,20 @@
       @keydown.enter="ensureInput"
     />
     <div>
-      <PattermResolver field-name="second: " v-model="secondText"/>
-      <PattermResolver field-name="minute: " v-model="minuteText"/>
-      <PattermResolver field-name="hour: " v-model="hourText"/>
-      <PattermResolver field-name="day: " v-model="dayText"/>
-      <PattermResolver field-name="month: " v-model="monthText"/>
-      <PattermResolver field-name="week: " v-model="weekText"/>
-      <PattermResolver field-name="year: " v-model="yearText"/>
+      <FieldResolver field-name="second" v-model="secondText" :allowdSpecialChar="['*',',','-','/']"/>
+      <FieldResolver field-name="minute" v-model="minuteText" :allowdSpecialChar="['*',',','-','/']"/>
+      <FieldResolver field-name="hour" v-model="hourText" :allowdSpecialChar="['*',',','-','/']"/>
+      <FieldResolver field-name="day" v-model="dayText" :allowdSpecialChar="['*',',','-','/','?','L','W']"/>
+      <FieldResolver field-name="month" v-model="monthText" :allowdSpecialChar="['*',',','-']"/>
+      <FieldResolver field-name="week" v-model="weekText" :allowdSpecialChar="['*',',','-','?','L','#']"/>
+      <FieldResolver field-name="year" v-model="yearText" :allowdSpecialChar="['*',',','-']"/>
     </div>
   </div>
 </template>
 
 <script>
 import InputText from "./InputText.vue";
-import PattermResolver from "./PattermResolver.vue";
+import FieldResolver from "./FieldResolver.vue";
 
 const LINUX_STYLE_SIZE = 6;
 const SPRING_STYLE_SIZE = 7;
@@ -28,7 +28,7 @@ export default {
   name: "CronResolver",
   components: {
     InputText,
-    PattermResolver
+    FieldResolver
   },
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
           .join(" ")
           .trim();
       },
-      set: function(newValue) {
+      set: function (newValue) {
         const fields = newValue.trim().split(" ");
         this.cronArraySize = fields.length;
         if (this.isLinuxStyle() || this.isSpringStyle()) {
@@ -73,10 +73,10 @@ export default {
     }
   },
   methods: {
-    isLinuxStyle: function() {
+    isLinuxStyle: function () {
       return this.cronArraySize === LINUX_STYLE_SIZE;
     },
-    isSpringStyle: function() {
+    isSpringStyle: function () {
       return this.cronArraySize === SPRING_STYLE_SIZE;
     },
     ensureInput: function() {}

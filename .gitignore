@@ -5,6 +5,7 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+.idea.*
 
 # Log files
 npm-debug.log*
@@ -20,3 +21,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+*.iml
