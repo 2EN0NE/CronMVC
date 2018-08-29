@@ -5,7 +5,7 @@
       placeholder="Please input the cron style text that you want to resolve"
       @keydown.enter="ensureInput"
     />
-    <div>
+    <div class="fields-meaning">
       <FieldResolver field-name="second" v-model="secondText" :allowdSpecialChar="['*',',','-','/']"/>
       <FieldResolver field-name="minute" v-model="minuteText" :allowdSpecialChar="['*',',','-','/']"/>
       <FieldResolver field-name="hour" v-model="hourText" :allowdSpecialChar="['*',',','-','/']"/>
@@ -84,8 +84,9 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+@import '../../../../public/variables.scss';
+
 h3 {
   margin: 40px 0 0;
 }
@@ -98,6 +99,9 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  color: $vue-green;
+}
+.fields-meaning {
+  margin: 1.5ch
 }
 </style>

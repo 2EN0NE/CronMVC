@@ -32,7 +32,7 @@ export default {
 @import '../../../../public/variables.scss';
 
 .input {
-  width: 100%;
+  width: 90%;
   padding: 8px 10px;
   border: 1px solid $vue-blue;
 }

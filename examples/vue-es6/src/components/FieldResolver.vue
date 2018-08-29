@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="field-resolver">
     <span>{{fieldName}} : </span>
     <input
     type="text"
     :value="value"
     v-on="listeners">
-    <span class="meaning"> -- {{resolvedMeaning}}</span>
-    <span class="error" v-if="hasErrorMsg"> -- {{errorMsg}}</span>
+    <span class="meaning" v-if="resolvedMeaning"> -- {{resolvedMeaning}}</span>
+    <span class="error" v-if="hasErrorMsg()"> -- {{errorMsg}}</span>
     <!-- <MeaningCard :every="fieldName"> -->
   </div>
 </template>
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     hasErrorMsg () {
-      return !!("string" === this.errorMsg ? this.errorMsg.length : false);
+      return !!("string" === typeof this.errorMsg ? this.errorMsg.length : false);
     },
     hasAnySpecificChar () {
       return !!this.value.match(/\D/g);
@@ -99,7 +99,7 @@ export default {
       // TODO isSpecificCharValid, isInRange => setErrorMsg
       if(this.hasAnySpecificChar()){
         if(0 === this.validSpecialCharInText.length) {
-          this.errorMsg = 'The text has the specific character that can not used in cron expression. Make sure the specific character in the set of ["*",",","-","/","?","L","W","#"]'
+          this.errorMsg = 'The text has the character that can not used in cron expression. Make sure the specific character in the set of ["*", ",", "-", "/", "?", "L", "W", "#"]'
         }else if (this.validSpecialCharInText.length > 1){
           this.errorMsg = 'There are more than ONE specific character, system can not resolve!'
         }
@@ -109,10 +109,10 @@ export default {
       return "string" === typeof this.value ? this.value.indexOf(c) >= 0: false;
     },
     resolveAsterrisk: function () {
-      return 'every ' + this.fieldName + 's'; 
+      return `every ${this.fieldName}s`; 
     },
     resolveComma: function () {
-      return this.value + ' ' + this.fieldName;
+      return `${this.value} ${this.value?this.fieldName:''}`.trim();
     },
     resolveHyphen: function () {
       // TODO now is the simplest.
@@ -120,7 +120,7 @@ export default {
       if(2 !== range.length){
         this.errorMsg = 'There are something wrong while resolve hyphen character.'
       }
-      return 'range from ' + range[0] + ' to ' + range[1] + ' ' + this.fieldName;
+      return `range from ${range[0]} to ${range[1]} ${this.fieldName}`;
     },
     resolveSlash: function () {
       // TODO now is the simplest.
@@ -128,8 +128,7 @@ export default {
       if(2 !== step.length){
         this.errorMsg = 'There are something wrong while resolve slash character.'
       }
-      return 'starting from the' + step[0] + ' ' + this.fieldName + ', and excute every ' + step[1] + ' ' + this.fieldName;
-      // return 'starting from the ${step[0]} ${this.fieldName}, and excute every ${step[1]} ${this.fieldName}';
+      return `starting from the ${step[0]} ${this.fieldName}, and excute every ${step[1]} ${this.fieldName}`;
     },
     hasStep: function (foo) {
       return "string" == typeof foo ? foo.indexOf(SLASH) >= 0 : false;
@@ -155,10 +154,14 @@ export default {
 <style lang="scss" scoped>
 @import '../../../../public/variables.scss';
 
+.field-resolver {
+  margin: 0.5ch;
+}
 .meaning {
   color: $vue-green;
 }
 .error {
-  color: $vue-blue;
+  color: $warn;
 }
+
 </style>
