@@ -6,13 +6,32 @@
       @keydown.enter="ensureInput"
     />
     <div class="fields-meaning">
-      <FieldResolver field-name="second" v-model="secondText" :allowdSpecialChar="['*',',','-','/']"/>
-      <FieldResolver field-name="minute" v-model="minuteText" :allowdSpecialChar="['*',',','-','/']"/>
-      <FieldResolver field-name="hour" v-model="hourText" :allowdSpecialChar="['*',',','-','/']"/>
-      <FieldResolver field-name="day" v-model="dayText" :allowdSpecialChar="['*',',','-','/','?','L','W']"/>
-      <FieldResolver field-name="month" v-model="monthText" :allowdSpecialChar="['*',',','-']"/>
-      <FieldResolver field-name="week" v-model="weekText" :allowdSpecialChar="['*',',','-','?','L','#']"/>
-      <FieldResolver field-name="year" v-model="yearText" :allowdSpecialChar="['*',',','-']"/>
+      <FieldResolver field-name="second" v-model="secondText" :allowdSpecialChar="['*',',','-','/']">
+        <AsteriskCard field-name="second" :value="secondText" @can-resolve="secondText = $event"/>
+        <SlashCard field-name="second" :value="secondText" @can-resolve="secondText = $event" :range="[0,59]"/>
+      </FieldResolver>
+      <FieldResolver field-name="minute" v-model="minuteText" :allowdSpecialChar="['*',',','-','/']">
+        <AsteriskCard field-name="minute" :value="minuteText" @can-resolve="minute = $event"/>
+        <SlashCard field-name="minute" :value="minuteText" @can-resolve="minute = $event" :range="[0,59]"/>
+      </FieldResolver>
+      <FieldResolver field-name="hour" v-model="hourText" :allowdSpecialChar="['*',',','-','/']">
+        <AsteriskCard field-name="hour" :value="hourText" @can-resolve="hour = $event"/>
+        <SlashCard field-name="hour" :value="hourText" @can-resolve="hour = $event" :range="[0,23]"/>
+      </FieldResolver>
+      <FieldResolver field-name="day" v-model="dayText" :allowdSpecialChar="['*',',','-','/','?','L','W']">
+        <AsteriskCard field-name="day" :value="dayText" @can-resolve="day = $event"/>
+        <SlashCard field-name="day" :value="dayText" @can-resolve="day = $event" :range="[0,31]"/>
+      </FieldResolver>
+      <FieldResolver field-name="month" v-model="monthText" :allowdSpecialChar="['*',',','-']">
+        <AsteriskCard field-name="month" :value="monthText" @can-resolve="month = $event"/>
+        <SlashCard field-name="month" :value="monthText" @can-resolve="month = $event" :range="[0,12]"/>
+      </FieldResolver>
+      <FieldResolver field-name="week" v-model="weekText" :allowdSpecialChar="['*',',','-','?','L','#']">
+        <AsteriskCard field-name="week" :value="weekText" @can-resolve="week = $event"/>
+      </FieldResolver>
+      <FieldResolver field-name="year" v-model="yearText" :allowdSpecialChar="['*',',','-']">
+        <AsteriskCard field-name="year" :value="yearText" @can-resolve="year = $event"/>
+      </FieldResolver>
     </div>
   </div>
 </template>
@@ -20,6 +39,8 @@
 <script>
 import InputText from "./InputText.vue";
 import FieldResolver from "./FieldResolver.vue";
+import AsteriskCard from "./AsteriskCard.vue";
+import SlashCard from "./SlashCard.vue";
 
 const LINUX_STYLE_SIZE = 6;
 const SPRING_STYLE_SIZE = 7;
@@ -28,7 +49,9 @@ export default {
   name: "CronResolver",
   components: {
     InputText,
-    FieldResolver
+    FieldResolver,
+    AsteriskCard,
+    SlashCard,
   },
   data() {
     return {

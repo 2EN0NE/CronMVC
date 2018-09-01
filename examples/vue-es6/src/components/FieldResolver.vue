@@ -6,8 +6,7 @@
     :value="value"
     v-on="listeners">
     <span class="meaning" v-if="resolvedMeaning"> -- {{resolvedMeaning}}</span>
-    <span class="error" v-if="hasErrorMsg()"> -- {{errorMsg}}</span>
-    <!-- <MeaningCard :every="fieldName"> -->
+    <slot></slot>
   </div>
 </template>
 
