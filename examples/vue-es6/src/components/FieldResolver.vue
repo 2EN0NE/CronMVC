@@ -155,6 +155,9 @@ export default {
 
 .field-resolver {
   margin: 0.5ch;
+  border-bottom: 1px solid #ebedf0;
+  padding: 21px 12px 25px;
+  color: rgba(0, 0, 0, 0.65);
 }
 .meaning {
   color: $vue-green;

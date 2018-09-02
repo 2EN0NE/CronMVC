@@ -1,19 +1,18 @@
 <template>
   <div :class="{active: active}">
-    <span>past every </span>
-    <input type="text" v-model="step" v-on="listeners">
-    <span> {{fieldName}} from </span>
-    <input type="text" v-model="start" v-on="listeners">
-    <span> through {{range[1]}} </span>
+    <span>past every {{fieldName}} from </span>
+    <input type="text" v-model="first" v-on="listeners">
+    <span> through </span>
+    <input type="text" v-model="second" v-on="listeners">
   </div>
 </template>
 
 <script>
 
-const SPECIFIC_CHAR = '/';
+const SPECIFIC_CHAR = '-';
 
 export default {
-  name: "SlashCard",
+  name: "HyphenCard",
   props: {
     fieldName: {
       type: String,
@@ -32,8 +31,8 @@ export default {
     return {
       errorMsg: '',
       active: false,
-      start: null,
-      step: null,
+      first: null,
+      second: null,
     };
   },
   watch: {
@@ -61,8 +60,8 @@ export default {
     reset () {
       this.active = false;
       this.errorMsg = '';
-      this.start = null;
-      this.step = null;
+      this.first = null;
+      this.second = null;
     },
     hasErrorMsg () {
       return !!("string" === typeof this.errorMsg ? this.errorMsg.length : false);
@@ -75,12 +74,12 @@ export default {
       return result;
     },
     validate () {
-      if(this.start < this.range[0] || this.start > this.range[1]) {
-        this.errorMsg = `The start value have to be in [${this.range[0]},${this.range[1]}]`;
+      if(this.first < this.range[0] || this.first > this.range[1]) {
+        this.errorMsg = `The first value have to be in [${this.range[0]},${this.range[1]}]`;
         return;
       }
-      if(this.step < this.range[0] + 1 || this.step > this.range[1] + 1) {
-        this.errorMsg = `The step value have to be in [${this.range[0] + 1},${this.range[1] + 1}]`;
+      if(this.second < this.range[0] || this.second > this.range[1]) {
+        this.errorMsg = `The second value have to be in [${this.range[0]},${this.range[1]}]`;
       }
     },
     hasSpecificChar (c) {
@@ -90,17 +89,17 @@ export default {
       if(!this.mayResolve()) {
         return;
       }
-      const stepValues = this.value.split(SPECIFIC_CHAR);
-      if(2 !== stepValues.length || ''===stepValues[0].trim() || ''===stepValues[1].trim()){
-        this.errorMsg = 'This field has the character "/" while can not match "A/B" form.';
+      const secondValues = this.value.split(SPECIFIC_CHAR);
+      if(2 !== secondValues.length || ''===secondValues[0].trim() || ''===secondValues[1].trim()){
+        this.errorMsg = 'This field has the character "-" while can not match "A-B" form.';
         return;
       }
-      this.start = stepValues[0];
-      this.step = stepValues[1];
+      this.first = secondValues[0];
+      this.second = secondValues[1];
       this.validate();
     },
     getCronText () {
-      return this.start + SPECIFIC_CHAR + this.step;
+      return this.first + SPECIFIC_CHAR + this.second;
     },
     getResolvedMeaning () {
     },

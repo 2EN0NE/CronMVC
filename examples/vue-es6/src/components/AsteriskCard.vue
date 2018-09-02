@@ -31,7 +31,6 @@ export default {
       if(this.mayResolve()){
         this.resolve();
         if(!this.hasErrorMsg()){
-          this.active = true;
           this.$emit('can-resolve', this.getCronText());
         }
       }else{
@@ -51,7 +50,11 @@ export default {
       return !!("string" === typeof this.errorMsg ? this.errorMsg.length : false);
     },
     mayResolve () {
-      return this.hasSpecificChar(SPECIFIC_CHAR);
+      const result = this.hasSpecificChar(SPECIFIC_CHAR);
+      if (result) {
+        this.active = true;
+      }
+      return result;
     },
     validate () {
       if(this.mayResolve() && this.value.length > 1) {
