@@ -48,7 +48,9 @@ export default {
       this.$emit('mistakes', this.errorMsg);
     },
     cardInputData () {
-      this.$emit('can-resolve', this.getCronText());
+      if(this.mayResolve()){
+        this.$emit('can-resolve', this.getCronText());
+      }
     },
   },
   computed: {

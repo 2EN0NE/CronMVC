@@ -13,40 +13,40 @@
         <CommaCard field-name="second" :value="secondText" @can-resolve="secondText = $event" :range="[0,59]"/>
       </FieldResolver>
       <FieldResolver field-name="minute" v-model="minuteText" :allowdSpecialChar="['*',',','-','/']">
-        <AsteriskCard field-name="minute" :value="minuteText" @can-resolve="minute = $event"/>
-        <SlashCard field-name="minute" :value="minuteText" @can-resolve="minute = $event" :range="[0,59]"/>
-        <HyphenCard field-name="minute" :value="minuteText" @can-resolve="minute = $event" :range="[0,59]"/>
-        <CommaCard field-name="minute" :value="minuteText" @can-resolve="minute = $event" :range="[0,59]"/>
+        <AsteriskCard field-name="minute" :value="minuteText" @can-resolve="minuteText = $event"/>
+        <SlashCard field-name="minute" :value="minuteText" @can-resolve="minuteText = $event" :range="[0,59]"/>
+        <HyphenCard field-name="minute" :value="minuteText" @can-resolve="minuteText = $event" :range="[0,59]"/>
+        <CommaCard field-name="minute" :value="minuteText" @can-resolve="minuteText = $event" :range="[0,59]"/>
       </FieldResolver>
       <FieldResolver field-name="hour" v-model="hourText" :allowdSpecialChar="['*',',','-','/']">
-        <AsteriskCard field-name="hour" :value="hourText" @can-resolve="hour = $event"/>
-        <SlashCard field-name="hour" :value="hourText" @can-resolve="hour = $event" :range="[0,23]"/>
-        <HyphenCard field-name="hour" :value="hourText" @can-resolve="hour = $event" :range="[0,23]"/>
-        <CommaCard field-name="hour" :value="hourText" @can-resolve="hour = $event" :range="[0,23]"/>
+        <AsteriskCard field-name="hour" :value="hourText" @can-resolve="hourText = $event"/>
+        <SlashCard field-name="hour" :value="hourText" @can-resolve="hourText = $event" :range="[0,23]"/>
+        <HyphenCard field-name="hour" :value="hourText" @can-resolve="hourText = $event" :range="[0,23]"/>
+        <CommaCard field-name="hour" :value="hourText" @can-resolve="hourText = $event" :range="[0,23]"/>
       </FieldResolver>
       <FieldResolver field-name="day" v-model="dayText" :allowdSpecialChar="['*',',','-','/','?','L','W']">
-        <AsteriskCard field-name="day" :value="dayText" @can-resolve="day = $event"/>
-        <SlashCard field-name="day" :value="dayText" @can-resolve="day = $event" :range="[0,31]"/>
-        <HyphenCard field-name="day" :value="dayText" @can-resolve="day = $event" :range="[0,31]"/>
-        <CommaCard field-name="day" :value="dayText" @can-resolve="day = $event" :range="[0,31]"/>
+        <AsteriskCard field-name="day" :value="dayText" @can-resolve="dayText = $event"/>
+        <SlashCard field-name="day" :value="dayText" @can-resolve="dayText = $event" :range="[0,31]"/>
+        <HyphenCard field-name="day" :value="dayText" @can-resolve="dayText = $event" :range="[0,31]"/>
+        <CommaCard field-name="day" :value="dayText" @can-resolve="dayText = $event" :range="[0,31]"/>
       </FieldResolver>
       <FieldResolver field-name="month" v-model="monthText" :allowdSpecialChar="['*',',','-']">
-        <AsteriskCard field-name="month" :value="monthText" @can-resolve="month = $event"/>
-        <SlashCard field-name="month" :value="monthText" @can-resolve="month = $event" :range="[1,12]"/>
-        <HyphenCard field-name="month" :value="monthText" @can-resolve="month = $event" :range="[1,12]"/>
-        <CommaCard field-name="month" :value="monthText" @can-resolve="month = $event" :range="[1,12]"/>
+        <AsteriskCard field-name="month" :value="monthText" @can-resolve="monthText = $event"/>
+        <SlashCard field-name="month" :value="monthText" @can-resolve="monthText = $event" :range="[1,12]"/>
+        <HyphenCard field-name="month" :value="monthText" @can-resolve="monthText = $event" :range="[1,12]"/>
+        <CommaCard field-name="month" :value="monthText" @can-resolve="monthText = $event" :range="[1,12]"/>
       </FieldResolver>
       <FieldResolver field-name="week" v-model="weekText" :allowdSpecialChar="['*',',','-','?','L','#']">
-        <AsteriskCard field-name="week" :value="weekText" @can-resolve="week = $event"/>
-        <SlashCard field-name="week" :value="weekText" @can-resolve="week = $event" :range="[0,6]"/>
-        <HyphenCard field-name="week" :value="weekText" @can-resolve="week = $event" :range="[0,7]"/>
-        <CommaCard field-name="week" :value="weekText" @can-resolve="week = $event" :range="[0,7]"/>
+        <AsteriskCard field-name="week" :value="weekText" @can-resolve="weekText = $event"/>
+        <SlashCard field-name="week" :value="weekText" @can-resolve="weekText = $event" :range="[0,6]"/>
+        <HyphenCard field-name="week" :value="weekText" @can-resolve="weekText = $event" :range="[0,7]"/>
+        <CommaCard field-name="week" :value="weekText" @can-resolve="weekText = $event" :range="[0,7]"/>
       </FieldResolver>
       <FieldResolver field-name="year" v-model="yearText" :allowdSpecialChar="['*',',','-']">
-        <AsteriskCard field-name="year" :value="yearText" @can-resolve="year = $event"/>
-        <SlashCard field-name="year" :value="yearText" @can-resolve="year = $event" :range="[1970,2038]"/>
-        <HyphenCard field-name="year" :value="yearText" @can-resolve="year = $event" :range="[1970,2038]"/>
-        <SlashCard field-name="year" :value="yearText" @can-resolve="year = $event" :range="[1970,2038]"/>
+        <AsteriskCard field-name="year" :value="yearText" @can-resolve="yearText = $event"/>
+        <SlashCard field-name="year" :value="yearText" @can-resolve="yearText = $event" :range="[1970,2038]"/>
+        <HyphenCard field-name="year" :value="yearText" @can-resolve="yearText = $event" :range="[1970,2038]"/>
+        <SlashCard field-name="year" :value="yearText" @can-resolve="yearText = $event" :range="[1970,2038]"/>
       </FieldResolver>
     </div>
   </div>

@@ -1,12 +1,16 @@
 <template>
-  <div class="field-resolver">
-    <span>{{fieldName}} : </span>
-    <input
-    type="text"
-    :value="value"
-    v-on="listeners">
-    <span class="meaning" v-if="resolvedMeaning"> -- {{resolvedMeaning}}</span>
-    <slot></slot>
+  <div class="field-resolver row">
+    <div class="separated-text col-3">
+      <span>{{fieldName}} : </span>
+      <input
+      type="text"
+      :value="value"
+      v-on="listeners">
+      <span class="meaning" v-if="resolvedMeaning"> -- {{resolvedMeaning}}</span>
+    </div>
+    <div class="meaning-cards col-9">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -158,6 +162,24 @@ export default {
   border-bottom: 1px solid #ebedf0;
   padding: 21px 12px 25px;
   color: rgba(0, 0, 0, 0.65);
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  list-style: none;
+  vertical-align: top;
+}
+.separated-text {
+  text-align: right;
+  vertical-align: middle;
+  line-height: 39.9999px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.meaning-cards {
 }
 .meaning {
   color: $vue-green;
