@@ -48,9 +48,7 @@ export default {
       this.$emit('mistakes', this.errorMsg);
     },
     cardInputData () {
-      if(this.mayResolve()){
-        this.$emit('can-resolve', this.getCronText());
-      }
+      this.$emit('can-resolve', this.getCronText());
     },
   },
   computed: {
@@ -62,7 +60,12 @@ export default {
     reset () {
       this.active = false;
       this.errorMsg = '';
-      this.cardInputData = Array(this.range[1] - this.range[0] + 1).fill(false);
+      const cardInputHasValue = this.cardInputData.filter((item) => {
+        return item
+      }).length;
+      if(cardInputHasValue){
+        this.cardInputData = Array(this.range[1] - this.range[0] + 1).fill(false);
+      }
     },
     hasErrorMsg () {
       return !!("string" === typeof this.errorMsg ? this.errorMsg.length : false);
