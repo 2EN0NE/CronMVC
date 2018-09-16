@@ -1,7 +1,7 @@
 <template>
   <div :class="{active: active}">
     <span v-for="(item, index) in cRange" :key="index">
-      <input type="checkbox" v-model="cardInputData[index]" v-on:input="handleInput[index]">
+      <input type="checkbox" :checked="cardInputData[index]" v-on:input="handleInput[index]">
       <label> {{cRange[index]}} </label>
     </span>
   </div>
@@ -59,7 +59,7 @@ export default {
         .fill(0)
         .map((v, i) => {
           return function(e) {
-            _this.cardInputData[i] = e.target.value === "on";
+            _this.cardInputData[i] = e.target.checked;
             _this.$emit("update:card", _this.getCronText());
           };
         });
