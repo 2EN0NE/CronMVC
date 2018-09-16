@@ -72,29 +72,44 @@ export default {
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-}
-.col-3 {
   display: block;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+.col-1 {
+  width: 8.33333333%;
+}
+.col-2 {
+  width: 16.66666667%
+}
+.col-3 {
   width: 25%;
 }
 .col-4 {
-  display: block;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 33.33333333%;
 }
+.col-5 {
+  width: 41.666666667;
+}
+.col-6 {
+  width: 50%;
+}
+.col-7 {
+  width: 58.33333333%;
+}
 .col-8 {
-  display: block;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 66.66666667%;
 }
 .col-9 {
-  display: block;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   width: 75%;
+}
+.col-10 {
+  width: 83.33333333%;
+}
+.col-11 {
+  width: 91.66666667%;
+}
+.col-12 {
+  width: 100%;
 }
 </style>

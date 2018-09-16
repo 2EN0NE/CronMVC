@@ -1,21 +1,26 @@
 <template>
   <div class="field-resolver row">
-    <div class="separated-text col-3">
-      <span>{{fieldName}} : </span>
-      <input
-      type="text"
-      :value="value"
-      v-on="listeners">
+    <div class="separated-text-box col-2">
+      <div class="field-name">
+        <span>{{fieldName}} : </span>
+      </div>
+      <input class="separated-text" type="text" :value="value" v-on="listeners">
     </div>
-    <div class="meaning-cards col-9">
-      <AsteriskCard v-if="allowCard('*')" :field-name="fieldName" :value="cronText" @resolved="handleResolved"/>
-      <SlashCard v-if="allowCard('/')" :field-name="fieldName" :value="cronText" :range="slashRange||defaultRange"
+    <div class="cards-box col-9">
+      <!-- <EmptyCard /> -->
+      <AsteriskCard class="card" v-if="allowCard('*')" :field-name="fieldName" :value="cronText" @resolved="handleResolved"/>
+      <SlashCard class="card" v-if="allowCard('/')" :field-name="fieldName" :value="cronText" :range="slashRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate"/>
-      <HyphenCard v-if="allowCard('-')" :field-name="fieldName" :value="cronText" :range="hyphenRange||defaultRange"
+      <HyphenCard class="card" v-if="allowCard('-')" :field-name="fieldName" :value="cronText" :range="hyphenRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate"/>
-      <CommaCard v-if="allowCard(',')" :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
+      <CommaCard class="card" v-if="allowCard(',')" :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate"/>
+      <!-- <QuestionCard /> -->
+      <!-- <LastCard /> -->
+      <!-- <WeekdayCard /> -->
+      <!-- <HashCard /> -->
     </div>
+    <div class="select-btn col-1" v-on:click="showAllCards">选择</div>
   </div>
 </template>
 
@@ -143,7 +148,8 @@ export default {
       this.$emit("input", e);
     },
     isOtherCardsActive() {},
-    resetCards() {}
+    resetCards() {},
+    showAllCards() {}
   }
 };
 </script>
@@ -166,22 +172,37 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   list-style: none;
-  vertical-align: top;
+  display: flex;
 }
-.separated-text {
-  text-align: right;
-  vertical-align: middle;
+.separated-text-box {
   line-height: 39.9999px;
-  display: inline-block;
   overflow: hidden;
   white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.meaning-cards {
+.cards-box {
 }
 .meaning {
   color: $vue-green;
 }
 .error {
   color: $warn;
+}
+.card:hover {
+  border: 1px solid $vue-blue;
+}
+.select-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.field-name {
+
+}
+.separated-text {
+  display: block;
+  width: 90%;
 }
 </style>

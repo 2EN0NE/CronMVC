@@ -33,5 +33,8 @@ export default {
   width: 90%;
   padding: 8px 10px;
   border: 1px solid $vue-blue;
+  height: 3em;
+  font-size: 1em;
+  text-align: center;
 }
 </style>
