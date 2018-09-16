@@ -39,6 +39,7 @@ export default {
   watch: {
     value() {
       if (this.mayResolve()) {
+        this.errorMsg = "";
         this.resolve();
         if (!this.hasErrorMsg()) {
           this.$emit("resolved", this.getCronText());
@@ -107,12 +108,14 @@ export default {
           'This field has the character "/" while can not match "A/B" form.';
         return;
       }
-      this.start = stepValues[0];
-      this.step = stepValues[1];
+      this.start = parseInt(stepValues[0]);
+      this.step = parseInt(stepValues[1]);
       this.validate();
     },
     getCronText() {
-      return this.start + SPECIFIC_CHAR + this.step;
+      const start = this.start ? this.start : "";
+      const step = this.step ? this.step : "";
+      return start + SPECIFIC_CHAR + step;
     },
     getResolvedMeaning() {}
   }

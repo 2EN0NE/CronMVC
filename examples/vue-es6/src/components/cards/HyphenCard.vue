@@ -105,13 +105,16 @@ export default {
       ) {
         this.errorMsg =
           'This field has the character "-" while can not match "A-B" form.';
+        return;
       }
       this.first = parseInt(splitValues[0]);
       this.second = parseInt(splitValues[1]);
       this.validate();
     },
     getCronText() {
-      return this.first + SPECIFIC_CHAR + this.second;
+      const first = this.first ? this.first : "";
+      const second = this.second ? this.second : "";
+      return first + SPECIFIC_CHAR + second;
     },
     getResolvedMeaning() {}
   }
