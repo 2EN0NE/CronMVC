@@ -140,7 +140,7 @@ export default {
       //   if (e.cronText) {
       //   }
       // }
-      this.$emit("input", e)
+      this.$emit("input", e);
     },
     isOtherCardsActive() {},
     resetCards() {}

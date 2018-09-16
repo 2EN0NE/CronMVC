@@ -12,22 +12,22 @@ export default {
   props: {
     value: {
       type: String,
-      default: '',
+      default: ""
     }
   },
   computed: {
-    listeners () {
+    listeners() {
       return {
         ...this.$listeners,
-        input: event => this.$emit('input', event.target.value)
-      }
+        input: event => this.$emit("input", event.target.value)
+      };
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../public/variables.scss';
+@import "../../../../public/variables.scss";
 
 .input {
   width: 90%;

@@ -1,7 +1,7 @@
 <template>
   <div :class="{active: active}">
     <span v-for="(item, index) in cRange" :key="index">
-      <input type="checkbox" v-model="cardInputData[index]" v-on="listeners">
+      <input type="checkbox" v-model="cardInputData[index]" v-on:input="handleInput[index]">
       <label> {{cRange[index]}} </label>
     </span>
   </div>
@@ -45,7 +45,7 @@ export default {
         this.reset();
       }
       this.$emit("mistakes", this.errorMsg);
-    },
+    }
   },
   computed: {
     cRange() {
@@ -53,11 +53,16 @@ export default {
         .fill(0)
         .map((v, i) => i + this.range[0]);
     },
-    listeners () {
-      return {
-        ...this.$listeners,
-        input: event => this.$emit("update:card", this.getCronText())
-      }
+    handleInput() {
+      const _this = this;
+      return Array(this.range[1] - this.range[0] + 1)
+        .fill(0)
+        .map((v, i) => {
+          return function(e) {
+            _this.cardInputData[i] = e.target.value === "on";
+            _this.$emit("update:card", _this.getCronText());
+          };
+        });
     }
   },
   methods: {
@@ -123,7 +128,7 @@ export default {
       chars.forEach(ele => {
         num = parseInt(ele);
         if (typeof num === "number" && !isNaN(num)) {
-          this.cardInputData[num] = true;
+          this.cardInputData[num - this.range[0]] = true;
         }
       });
     },
@@ -131,7 +136,7 @@ export default {
       const foo = [];
       this.cardInputData.forEach((e, i) => {
         if (e) {
-          foo.push(i);
+          foo.push(this.cRange[i]);
         }
       });
       return foo.join(",");
