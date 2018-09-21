@@ -1,19 +1,23 @@
 <template>
-  <div class="field-resolver row">
+  <div class="field-resolver row" >
     <div class="separated-text-box col-2">
       <div class="field-name">
-        <span>{{fieldName}} : </span>
+        <span>{{fieldName}}</span>
       </div>
       <input class="separated-text" type="text" :value="value" v-on="listeners">
     </div>
-    <div class="cards-box col-9">
+    <div class="cards-box col-9" :class="{'cards-box-active':allCardsDisplayed}">
       <!-- <EmptyCard /> -->
-      <AsteriskCard class="card" v-if="allowCard('*')" :field-name="fieldName" :value="cronText" @resolved="handleResolved"/>
-      <SlashCard class="card" v-if="allowCard('/')" :field-name="fieldName" :value="cronText" :range="slashRange||defaultRange"
+      <AsteriskCard class="card" v-if="allowCard('*')" v-show="isSelected('ASTERISK')" @click.native="chooseThisCard('ASTERISK')"
+        :field-name="fieldName" :value="cronText" @resolved="handleResolved" @update:card="cardUpdate"/>
+      <SlashCard class="card" v-if="allowCard('/')" v-show="isSelected('SLASH')" @click.native="chooseThisCard('SLASH')"
+        :field-name="fieldName" :value="cronText" :range="slashRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate"/>
-      <HyphenCard class="card" v-if="allowCard('-')" :field-name="fieldName" :value="cronText" :range="hyphenRange||defaultRange"
+      <HyphenCard class="card" v-if="allowCard('-')" v-show="isSelected('HYPHEN')" @click.native="chooseThisCard('HYPHEN')"
+       :field-name="fieldName" :value="cronText" :range="hyphenRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate"/>
-      <CommaCard class="card" v-if="allowCard(',')" :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
+      <CommaCard class="card" v-if="allowCard(',')" v-show="isSelected('COMMA')" @click.native="chooseThisCard('COMMA')"
+       :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate"/>
       <!-- <QuestionCard /> -->
       <!-- <LastCard /> -->
@@ -102,6 +106,14 @@ export default {
         WEEKDAY,
         HASH
       ].filter(text => ~this.value.indexOf(text));
+    },
+    allCardsDisplayed() {
+      for (const name in this.cards) {
+        if (!this.cards[name].active) {
+          return false;
+        }
+      }
+      return true;
     }
   },
   watch: {
@@ -127,7 +139,7 @@ export default {
     },
     activateCard(e) {
       if (e && e.cardName && this.cards[e.cardName]) {
-        for (let field in this.cards) {
+        for (const field in this.cards) {
           this.cards[field].active = field === e.cardName ? true : false;
         }
       }
@@ -148,8 +160,34 @@ export default {
       this.$emit("input", e);
     },
     isOtherCardsActive() {},
-    resetCards() {},
-    showAllCards() {}
+    resetCards() {
+      this.cards = {
+        ASTERISK: { active: false, resolved: "", errorMsg: "" },
+        COMMA: { active: false, resolved: "", errorMsg: "" },
+        HYPHEN: { active: false, resolved: "", errorMsg: "" },
+        SLASH: { active: false, resolved: "", errorMsg: "" },
+        QUESTION: { active: false, resolved: "", errorMsg: "" },
+        LAST: { active: false, resolved: "", errorMsg: "" },
+        WEEKDAY: { active: false, resolved: "", errorMsg: "" },
+        HASH: { active: false, resolved: "", errorMsg: "" }
+      };
+    },
+    showAllCards() {
+      if(this.allCardsDisplayed){
+        this.resetCards();
+      }else{
+        for (let cardName in this.cards) {
+          this.cards[cardName].active = true;
+        }
+      }
+    },
+    chooseThisCard(cardName) {
+      this.resetCards();
+      this.cards[cardName].active = true;
+    },
+    isSelected(cardName) {
+      return this.cards[cardName].active;
+    }
   }
 };
 </script>
@@ -159,8 +197,8 @@ export default {
 
 .field-resolver {
   margin: 0.5ch;
-  border-bottom: 1px solid #ebedf0;
-  padding: 21px 12px 25px;
+  border-bottom: 1px solid #ebebeb;
+  padding: 10px 5px 10px;
   color: rgba(0, 0, 0, 0.65);
   font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
@@ -181,8 +219,20 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-right: 5px;
+  border-right: 1px solid #f4f4f4;
 }
 .cards-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cards-box-active {
+  z-index: 10;
+}
+.cards-box-background {
+  background-color: grey;
+  z-index: 1;
 }
 .meaning {
   color: $vue-green;
@@ -190,16 +240,18 @@ export default {
 .error {
   color: $warn;
 }
-.card:hover {
-  border: 1px solid $vue-blue;
+.cards-box-active .card:hover {
+  border: 1px solid #f0f0f0;
+  border-radius: 3px;
+  box-shadow:0px 0px 10px #dddddd;
 }
 .select-btn {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-left: 1px solid #f4f4f4;
 }
 .field-name {
-
 }
 .separated-text {
   display: block;

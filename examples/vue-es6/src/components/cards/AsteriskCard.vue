@@ -1,5 +1,5 @@
 <template>
-  <div :class="{active: active}">
+  <div class="card" :class="{active: active}" @click="$emit('update:card', '*')">
     <span>every {{fieldName}}</span>
   </div>
 </template>
@@ -81,7 +81,10 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../../public/variables.scss";
 
+.card {
+  padding: 5px;
+}
 .active {
-  color: $warn;
+  color: $vue-green;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{active: active}">
+  <div class="card" :class="{active: active}">
     <span>past every </span>
     <input type="text" v-model="step" v-on="listeners">
     <span> {{fieldName}} from </span>
@@ -125,7 +125,10 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../../public/variables.scss";
 
+.card {
+  padding: 5px;
+}
 .active {
-  color: $warn;
+  color: $vue-green;
 }
 </style>
