@@ -36,5 +36,6 @@ export default {
   height: 3em;
   font-size: 1em;
   text-align: center;
+  color: $font;
 }
 </style>

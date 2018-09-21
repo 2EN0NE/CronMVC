@@ -32,10 +32,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: $vue-blue;
-  margin-top: 60px;
+  margin-top: 5ch;
 }
 .footer {
-  margin: 2ch;
+  margin: 1.5ch;
 }
 .row {
   position: relative;
@@ -111,5 +111,8 @@ export default {
 }
 .col-12 {
   width: 100%;
+}
+input {
+  color: $font;
 }
 </style>

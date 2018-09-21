@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{active: active}">
+  <div class="card" :class="{unactive: !active}">
     <span v-for="(item, index) in cRange" :key="index">
       <input type="checkbox" :checked="cardInputData[index]" v-on:input="handleInput[index]">
       <label> {{cRange[index]}} </label>
@@ -152,7 +152,7 @@ export default {
 .card {
   padding: 5px;
 }
-.active {
-  color: $vue-green;
+.unactive {
+  color: $grey7;
 }
 </style>

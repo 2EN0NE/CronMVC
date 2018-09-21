@@ -197,7 +197,7 @@ export default {
 
 .field-resolver {
   margin: 0.5ch;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid $grey2;
   padding: 10px 5px 10px;
   color: rgba(0, 0, 0, 0.65);
   font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -219,8 +219,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: 5px;
-  border-right: 1px solid #f4f4f4;
+  padding: 3px 10px 3px 10px;
+  border-right: 1px solid $grey1;
 }
 .cards-box {
   display: flex;
@@ -241,20 +241,21 @@ export default {
   color: $warn;
 }
 .cards-box-active .card:hover {
-  border: 1px solid #f0f0f0;
+  border: 1px solid $grey1;
   border-radius: 3px;
-  box-shadow:0px 0px 10px #dddddd;
+  box-shadow:0px 0px 10px $grey3;
 }
 .select-btn {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-left: 1px solid #f4f4f4;
+  border-left: 1px solid $grey1;
 }
 .field-name {
 }
 .separated-text {
   display: block;
-  width: 90%;
+  width: 100%;
 }
 </style>

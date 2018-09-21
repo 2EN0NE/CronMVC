@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{active: active}" @click="$emit('update:card', '*')">
+  <div class="card" :class="{unactive: !active}" @click="$emit('update:card', '*')">
     <span>every {{fieldName}}</span>
   </div>
 </template>
@@ -84,7 +84,7 @@ export default {
 .card {
   padding: 5px;
 }
-.active {
-  color: $vue-green;
+.unactive {
+  color: $grey7;
 }
 </style>

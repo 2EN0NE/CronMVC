@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="natural-language">“你好”</div>
     <InputText
       v-model="cronText"
       placeholder="Please input the cron style text that you want to resolve"
@@ -89,9 +90,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../public/variables.scss";
 
-h3 {
-  margin: 40px 0 0;
-}
 ul {
   list-style-type: none;
   padding: 0;
@@ -105,5 +103,10 @@ a {
 }
 .fields-meaning {
   margin: 1.5ch;
+}
+.natural-language {
+  margin: 2ch;
+  font-size: 2ch;
+  color: grey;
 }
 </style>
