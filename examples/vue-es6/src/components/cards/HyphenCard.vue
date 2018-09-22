@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{unactive: !active}">
+  <div :class="{unactive: !active}">
     <span>past every {{fieldName}} from </span>
     <input type="text" v-model="first" v-on="listeners">
     <span> through </span>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+const cardName = "HYPHEN";
 const SPECIFIC_CHAR = "-";
 
 export default {
@@ -39,20 +40,31 @@ export default {
       if (this.mayResolve()) {
         this.errorMsg = "";
         this.resolve();
-        if (!this.hasErrorMsg()) {
-          this.$emit("resolved", this.getCronText());
+        if (this.hasErrorMsg()) {
+          this.$emit("error", this.errorMsg);
+        } else {
+          const _this = this;
+          this.$emit("resolved", {
+            cardName: cardName,
+            cronText: _this.getCronText(),
+            resolved: _this.getResolvedMeaning()
+          });
         }
       } else {
         this.reset();
       }
-      this.$emit("mistakes", this.errorMsg);
     }
   },
   computed: {
     listeners() {
+      const _this = this;
       return {
-        ...this.$listeners,
-        input: () => this.$emit("update:card", this.getCronText())
+        ..._this.$listeners,
+        input: () =>
+          _this.$emit("update:card", {
+            cardName: cardName,
+            cronText: _this.getCronText()
+          })
       };
     }
   },
@@ -116,7 +128,9 @@ export default {
       const second = this.second ? this.second : "";
       return first + SPECIFIC_CHAR + second;
     },
-    getResolvedMeaning() {}
+    getResolvedMeaning() {
+      return `This is HYPHEN card test`;
+    }
   }
 };
 </script>
@@ -124,9 +138,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../../public/variables.scss";
 
-.card {
-  padding: 5px;
-}
 .unactive {
   color: $grey7;
 }

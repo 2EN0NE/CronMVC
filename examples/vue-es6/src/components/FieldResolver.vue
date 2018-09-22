@@ -6,23 +6,33 @@
       </div>
       <input class="separated-text" type="text" :value="value" v-on="listeners">
     </div>
-    <div class="cards-box col-9" :class="{'cards-box-active':allCardsDisplayed}">
+    <div class="cards-box col-9" :class="{'cards-box-display':allCardsDisplayed}">
       <!-- <EmptyCard /> -->
-      <AsteriskCard class="card" v-if="allowCard('*')" v-show="isSelected('ASTERISK')" @click.native="chooseThisCard('ASTERISK')"
-        :field-name="fieldName" :value="cronText" @resolved="handleResolved" @update:card="cardUpdate"/>
-      <SlashCard class="card" v-if="allowCard('/')" v-show="isSelected('SLASH')" @click.native="chooseThisCard('SLASH')"
+      <AsteriskCard id="ASTERISK" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('ASTERISK')}"
+        v-if="allowCard('*')" v-show="isSelected('ASTERISK')"
+        :field-name="fieldName" :value="cronText"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('ASTERISK')"/>
+      <SlashCard id="SLASH" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('SLASH')}"
+        v-if="allowCard('/')" v-show="isSelected('SLASH')"
         :field-name="fieldName" :value="cronText" :range="slashRange||defaultRange"
-        @resolved="handleResolved" @update:card="cardUpdate"/>
-      <HyphenCard class="card" v-if="allowCard('-')" v-show="isSelected('HYPHEN')" @click.native="chooseThisCard('HYPHEN')"
-       :field-name="fieldName" :value="cronText" :range="hyphenRange||defaultRange"
-        @resolved="handleResolved" @update:card="cardUpdate"/>
-      <CommaCard class="card" v-if="allowCard(',')" v-show="isSelected('COMMA')" @click.native="chooseThisCard('COMMA')"
-       :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
-        @resolved="handleResolved" @update:card="cardUpdate"/>
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('SLASH')"/>
+      <HyphenCard id="HYPHEN" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('HYPHEN')}"
+        v-if="allowCard('-')" v-show="isSelected('HYPHEN')" 
+        :field-name="fieldName" :value="cronText" :range="hyphenRange||defaultRange"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('HYPHEN')"/>
+      <CommaCard id="COMMA" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('COMMA')}"
+        v-if="allowCard(',')" v-show="isSelected('COMMA')" 
+        :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('COMMA')"/>
       <!-- <QuestionCard /> -->
       <!-- <LastCard /> -->
       <!-- <WeekdayCard /> -->
       <!-- <HashCard /> -->
+      <div class="error-message" v-if="errorMsg">{{errorMsg}}</div>
     </div>
     <div class="select-btn col-1" v-on:click="showAllCards">选择</div>
   </div>
@@ -77,15 +87,16 @@ export default {
       errorMsg: "",
       cronText: this.value || "",
       cards: {
-        ASTERISK: { active: false, resolved: "", errorMsg: "" },
-        COMMA: { active: false, resolved: "", errorMsg: "" },
-        HYPHEN: { active: false, resolved: "", errorMsg: "" },
-        SLASH: { active: false, resolved: "", errorMsg: "" },
-        QUESTION: { active: false, resolved: "", errorMsg: "" },
-        LAST: { active: false, resolved: "", errorMsg: "" },
-        WEEKDAY: { active: false, resolved: "", errorMsg: "" },
-        HASH: { active: false, resolved: "", errorMsg: "" }
-      }
+        ASTERISK: { display: false, resolved: "", errorMsg: "" },
+        COMMA: { display: false, resolved: "", errorMsg: "" },
+        HYPHEN: { display: false, resolved: "", errorMsg: "" },
+        SLASH: { display: false, resolved: "", errorMsg: "" },
+        QUESTION: { display: false, resolved: "", errorMsg: "" },
+        LAST: { display: false, resolved: "", errorMsg: "" },
+        WEEKDAY: { display: false, resolved: "", errorMsg: "" },
+        HASH: { display: false, resolved: "", errorMsg: "" }
+      },
+      lastDisplayed: ""
     };
   },
   computed: {
@@ -109,7 +120,7 @@ export default {
     },
     allCardsDisplayed() {
       for (const name in this.cards) {
-        if (!this.cards[name].active) {
+        if (!this.cards[name].display) {
           return false;
         }
       }
@@ -131,62 +142,63 @@ export default {
         ? this.errorMsg.length
         : false);
     },
-    // hasAnySpecificChar() {
-    //   return !!this.value.match(/\D/g);
-    // },
     allowCard(t) {
       return ~this.allowedSpecialChar.indexOf(t);
     },
-    activateCard(e) {
+    handleResolved(e) {
       if (e && e.cardName && this.cards[e.cardName]) {
-        for (const field in this.cards) {
-          this.cards[field].active = field === e.cardName ? true : false;
-        }
+        this.resetCards();
+        this.cards[e.cardName].display = true;
+        this.cards[e.cardName].resolved = e.resolved;
+        this.lastDisplayed = e.cardName;
+        this.errorMsg = "";
       }
     },
-    handleResolved(e) {
-      // if (e && e.cardName && this.cards[e.cardName]) {
-      //   this.cards[e.cardName].resolved = e.resolved;
-      // }
-    },
     cardUpdate(e) {
-      // if (e && e.cardName) {
-      //   if (this.isOtherCardsActive(e.cardName)) {
-      //     this.resetCards();
-      //   }
-      //   if (e.cronText) {
-      //   }
-      // }
-      this.$emit("input", e);
+      if (e && e.cardName && e.cronText) {
+        this.$emit("input", e.cronText);
+        this.lastDisplayed = e.cardName;
+      }
     },
-    isOtherCardsActive() {},
     resetCards() {
       this.cards = {
-        ASTERISK: { active: false, resolved: "", errorMsg: "" },
-        COMMA: { active: false, resolved: "", errorMsg: "" },
-        HYPHEN: { active: false, resolved: "", errorMsg: "" },
-        SLASH: { active: false, resolved: "", errorMsg: "" },
-        QUESTION: { active: false, resolved: "", errorMsg: "" },
-        LAST: { active: false, resolved: "", errorMsg: "" },
-        WEEKDAY: { active: false, resolved: "", errorMsg: "" },
-        HASH: { active: false, resolved: "", errorMsg: "" }
+        ASTERISK: { display: false, resolved: "", errorMsg: "" },
+        COMMA: { display: false, resolved: "", errorMsg: "" },
+        HYPHEN: { display: false, resolved: "", errorMsg: "" },
+        SLASH: { display: false, resolved: "", errorMsg: "" },
+        QUESTION: { display: false, resolved: "", errorMsg: "" },
+        LAST: { display: false, resolved: "", errorMsg: "" },
+        WEEKDAY: { display: false, resolved: "", errorMsg: "" },
+        HASH: { display: false, resolved: "", errorMsg: "" }
       };
     },
     showAllCards() {
-      if(this.allCardsDisplayed){
+      if (this.allCardsDisplayed) {
         this.resetCards();
-      }else{
+        if (this.lastDisplayed) {
+          this.cards[this.lastDisplayed].display = true;
+        }
+      } else {
         for (let cardName in this.cards) {
-          this.cards[cardName].active = true;
+          this.cards[cardName].display = true;
         }
       }
     },
     chooseThisCard(cardName) {
       this.resetCards();
-      this.cards[cardName].active = true;
+      this.cards[cardName].display = true;
+      this.lastDisplayed = cardName;
     },
     isSelected(cardName) {
-      return this.cards[cardName].active;
+      return this.cards[cardName].display;
+    },
+    hasNextEle(cardName) {
+      const ele = document.getElementById(cardName);
+      if (ele) {
+        return !(ele.parentElement.lastElementChild === ele);
+      } else {
+        return false;
+      }
     }
   }
 };
@@ -227,7 +239,7 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-.cards-box-active {
+.cards-box-display {
   z-index: 10;
 }
 .cards-box-background {
@@ -237,13 +249,14 @@ export default {
 .meaning {
   color: $vue-green;
 }
-.error {
+.error-message {
+  border-top: 1px solid $grey1;
   color: $warn;
 }
-.cards-box-active .card:hover {
+.cards-box-display .card:hover {
   border: 1px solid $grey1;
   border-radius: 3px;
-  box-shadow:0px 0px 10px $grey3;
+  box-shadow: 0px 0px 10px $grey3;
 }
 .select-btn {
   cursor: pointer;
@@ -257,5 +270,11 @@ export default {
 .separated-text {
   display: block;
   width: 100%;
+}
+.card {
+  padding: 5px;
+}
+.card-seperate {
+  border-bottom: 1px solid $grey1;
 }
 </style>

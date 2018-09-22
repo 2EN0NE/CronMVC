@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{unactive: !active}">
+  <div :class="{unactive: !active}">
     <span>past every </span>
     <input type="text" v-model="step" v-on="listeners">
     <span> {{fieldName}} from </span>
@@ -41,20 +41,31 @@ export default {
       if (this.mayResolve()) {
         this.errorMsg = "";
         this.resolve();
-        if (!this.hasErrorMsg()) {
-          this.$emit("resolved", this.getCronText());
+        if (this.hasErrorMsg()) {
+          this.$emit("error", this.errorMsg);
+        } else {
+          const _this = this;
+          _this.$emit("resolved", {
+            cardName: cardName,
+            cronText: _this.getCronText(),
+            resolved: _this.getResolvedMeaning()
+          });
         }
       } else {
         this.reset();
       }
-      this.$emit("mistakes", this.errorMsg);
     }
   },
   computed: {
     listeners() {
+      const _this = this;
       return {
-        ...this.$listeners,
-        input: () => this.$emit("update:card", this.getCronText())
+        ..._this.$listeners,
+        input: () =>
+          _this.$emit("update:card", {
+            cardName: cardName,
+            cronText: _this.getCronText()
+          })
       };
     }
   },
@@ -117,7 +128,9 @@ export default {
       const step = this.step ? this.step : "";
       return start + SPECIFIC_CHAR + step;
     },
-    getResolvedMeaning() {}
+    getResolvedMeaning() {
+      return `This is SLASH card test`;
+    }
   }
 };
 </script>
@@ -125,9 +138,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../../public/variables.scss";
 
-.card {
-  padding: 5px;
-}
 .unactive {
   color: $grey7;
 }

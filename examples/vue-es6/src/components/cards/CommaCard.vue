@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{unactive: !active}">
+  <div :class="{unactive: !active}">
     <span v-for="(item, index) in cRange" :key="index">
       <input type="checkbox" :checked="cardInputData[index]" v-on:input="handleInput[index]">
       <label> {{cRange[index]}} </label>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+const cardName = "COMMA";
 const SPECIFIC_CHAR = ",";
 
 export default {
@@ -38,13 +39,19 @@ export default {
       if (this.mayResolve()) {
         this.errorMsg = "";
         this.resolve();
-        if (!this.hasErrorMsg()) {
-          this.$emit("resolved", this.getCronText());
+        if (this.hasErrorMsg()) {
+          this.$emit("error", this.errorMsg);
+        } else {
+          const _this = this;
+          _this.$emit("resolved", {
+            cardName: cardName,
+            cronText: _this.getCronText(),
+            resolved: _this.getResolvedMeaning()
+          });
         }
       } else {
         this.reset();
       }
-      this.$emit("mistakes", this.errorMsg);
     }
   },
   computed: {
@@ -60,7 +67,10 @@ export default {
         .map((v, i) => {
           return function(e) {
             _this.cardInputData[i] = e.target.checked;
-            _this.$emit("update:card", _this.getCronText());
+            _this.$emit("update:card", {
+              cardName: cardName,
+              cronText: _this.getCronText()
+            });
           };
         });
     }
@@ -141,7 +151,9 @@ export default {
       });
       return foo.join(",");
     },
-    getResolvedMeaning() {}
+    getResolvedMeaning() {
+      return `This is COMMA Card test`;
+    }
   }
 };
 </script>
@@ -149,9 +161,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../../public/variables.scss";
 
-.card {
-  padding: 5px;
-}
 .unactive {
   color: $grey7;
 }

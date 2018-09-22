@@ -1,10 +1,11 @@
 <template>
-  <div class="card" :class="{unactive: !active}" @click="$emit('update:card', '*')">
+  <div :class="{unactive: !active}" @click="handleInput">
     <span>every {{fieldName}}</span>
   </div>
 </template>
 
 <script>
+const cardName = "ASTERISK";
 const SPECIFIC_CHAR = "*";
 
 export default {
@@ -30,13 +31,19 @@ export default {
       if (this.mayResolve()) {
         this.errorMsg = "";
         this.resolve();
-        if (!this.hasErrorMsg()) {
-          this.$emit("resolved:card", this.getCronText());
+        if (this.hasErrorMsg()) {
+          this.$emit("error", this.errorMsg);
+        } else {
+          const _this = this;
+          _this.$emit("resolved", {
+            cardName: cardName,
+            cronText: _this.getCronText(),
+            resolved: _this.getResolvedMeaning()
+          });
         }
       } else {
         this.reset();
       }
-      this.$emit("mistakes", this.errorMsg);
     }
   },
   computed: {},
@@ -73,7 +80,15 @@ export default {
     getCronText() {
       return SPECIFIC_CHAR;
     },
-    getResolvedMeaning() {}
+    getResolvedMeaning() {
+      return `every ${this.fieldName}`;
+    },
+    handleInput() {
+      this.$emit("update:card", {
+        cardName: cardName,
+        cronText: SPECIFIC_CHAR
+      });
+    }
   }
 };
 </script>
@@ -81,9 +96,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../../../../public/variables.scss";
 
-.card {
-  padding: 5px;
-}
 .unactive {
   color: $grey7;
 }
