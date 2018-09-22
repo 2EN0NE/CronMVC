@@ -1,9 +1,9 @@
 <template>
   <div :class="{unactive: !active}">
     <span>past every {{fieldName}} from </span>
-    <input type="text" v-model="first" v-on="listeners">
+    <input type="text" v-model="start" v-on="listeners">
     <span> through </span>
-    <input type="text" v-model="second" v-on="listeners">
+    <input type="text" v-model="end" v-on="listeners">
   </div>
 </template>
 
@@ -31,8 +31,8 @@ export default {
     return {
       errorMsg: "",
       active: false,
-      first: null,
-      second: null
+      start: null,
+      end: null
     };
   },
   watch: {
@@ -72,8 +72,8 @@ export default {
     reset() {
       this.active = false;
       this.errorMsg = "";
-      this.first = null;
-      this.second = null;
+      this.start = null;
+      this.end = null;
     },
     hasErrorMsg() {
       return !!("string" === typeof this.errorMsg
@@ -88,13 +88,13 @@ export default {
       return result;
     },
     validate() {
-      if (this.first < this.range[0] || this.first > this.range[1]) {
+      if (this.start < this.range[0] || this.start > this.range[1]) {
         this.errorMsg = `The first value have to be in [${this.range[0]},${
           this.range[1]
         }]`;
         return;
       }
-      if (this.second < this.range[0] || this.second > this.range[1]) {
+      if (this.end < this.range[0] || this.end > this.range[1]) {
         this.errorMsg = `The second value have to be in [${this.range[0]},${
           this.range[1]
         }]`;
@@ -119,17 +119,77 @@ export default {
           'This field has the character "-" while can not match "A-B" form.';
         return;
       }
-      this.first = parseInt(splitValues[0]);
-      this.second = parseInt(splitValues[1]);
+      this.start = parseInt(splitValues[0]);
+      this.end = parseInt(splitValues[1]);
       this.validate();
     },
     getCronText() {
-      const first = this.first ? this.first : "";
-      const second = this.second ? this.second : "";
-      return first + SPECIFIC_CHAR + second;
+      const start = this.start ? this.start : "";
+      const end = this.end ? this.end : "";
+      return start + SPECIFIC_CHAR + end;
     },
     getResolvedMeaning() {
-      return `This is HYPHEN card test`;
+      const pre = this.resolvedPreText();
+      const body = this.resolvedBodyText();
+      return pre + body;
+    },
+    resolvedPreText() {
+      if (this.fieldName === "year") {
+        return "on ";
+      } else if (this.fieldName === "week") {
+        return "on ";
+      } else if (this.fieldName === "month") {
+        return "in ";
+      } else if (this.fieldName === "day") {
+        return "on ";
+      } else if (this.fieldName === "hour") {
+        return "past";
+      } else if (this.fieldName === "minute") {
+        return "at ";
+      } else if (this.fieldName === "second") {
+        return "at ";
+      }
+    },
+    resolvedBodyText() {
+      let startText = this.start;
+      let endText = this.end
+      let fieldNameText = this.fieldName;
+      if (this.fieldName === "week") {
+        startText = this.mapWeekText(startText);
+        fieldNameText = "day-of-week";
+      } else if (this.fieldName === "month") {
+        startText = this.mapMonthText(startText);
+        fieldNameText = "day-of-month";
+      }
+      return `every ${fieldNameText} from ${startText} through ${endText}`
+    },
+    mapWeekText(t) {
+      return [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ][t + ""];
+    },
+    mapMonthText(t) {
+      return [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]["" + t];
     }
   }
 };
@@ -139,6 +199,6 @@ export default {
 @import "../../../../../public/variables.scss";
 
 .unactive {
-  color: $grey7;
+  color: $grey6;
 }
 </style>

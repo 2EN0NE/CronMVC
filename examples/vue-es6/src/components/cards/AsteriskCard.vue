@@ -97,6 +97,6 @@ export default {
 @import "../../../../../public/variables.scss";
 
 .unactive {
-  color: $grey7;
+  color: $grey6;
 }
 </style>

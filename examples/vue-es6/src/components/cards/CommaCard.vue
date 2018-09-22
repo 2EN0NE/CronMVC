@@ -152,7 +152,68 @@ export default {
       return foo.join(",");
     },
     getResolvedMeaning() {
-      return `This is COMMA Card test`;
+      const pre = this.resolvedPreText();
+      const body = this.resolvedBodyText();
+      return pre + body;
+    },
+    resolvedPreText() {
+      if (this.fieldName === "year") {
+        return "on ";
+      } else if (this.fieldName === "week") {
+        return "on ";
+      } else if (this.fieldName === "month") {
+        return "in ";
+      } else if (this.fieldName === "day") {
+        return "on day-of-month ";
+      } else if (this.fieldName === "hour") {
+        return "past hour ";
+      } else if (this.fieldName === "minute") {
+        return "at minute ";
+      } else if (this.fieldName === "second") {
+        return "at second ";
+      }
+    },
+    resolvedBodyText() {
+      let t = this.getCronText();
+      if (this.fieldName === "week") {
+        t = this.mapWeekText(t);
+      } else if (this.fieldName === "month") {
+        t = this.mapMonthText(t);
+      }
+      const lastCommaIndex = t.lastIndexOf(",");
+      if (~lastCommaIndex) {
+        t =
+          t.substr(0, lastCommaIndex) +
+          " and " +
+          t.substring(lastCommaIndex + 1, t.length);
+      }
+      return t.replace(/,/g, ", ");
+    },
+    mapWeekText(t) {
+      return t
+        .replace(/0/g, "Sunday")
+        .replace(/1/g, "Monday")
+        .replace(/2/g, "Tuesday")
+        .replace(/3/g, "Wednesday")
+        .replace(/4/g, "Thursday")
+        .replace(/5/g, "Friday")
+        .replace(/6/g, "Saturday")
+        .replace(/7/g, "Sunday");
+    },
+    mapMonthText(t) {
+      return t
+        .replace(/12/g, "December")
+        .replace(/11/g, "November")
+        .replace(/10/g, "October")
+        .replace(/9/g, "September")
+        .replace(/8/g, "August")
+        .replace(/7/g, "July")
+        .replace(/6/g, "June")
+        .replace(/5/g, "May")
+        .replace(/4/g, "April")
+        .replace(/3/g, "March")
+        .replace(/2/g, "February")
+        .replace(/1/g, "January");
     }
   }
 };
@@ -162,6 +223,6 @@ export default {
 @import "../../../../../public/variables.scss";
 
 .unactive {
-  color: $grey7;
+  color: $grey6;
 }
 </style>

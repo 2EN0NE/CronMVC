@@ -34,7 +34,7 @@
       <!-- <HashCard /> -->
       <div class="error-message" v-if="errorMsg">{{errorMsg}}</div>
     </div>
-    <div class="select-btn col-1" v-on:click="showAllCards">选择</div>
+    <div class="select-btn col-1" v-on:click="showAllCards">select</div>
   </div>
 </template>
 
@@ -129,11 +129,12 @@ export default {
   },
   watch: {
     value() {
-      this.cronText = this.value;
-    },
-    cards: {
-      handler(newVal, oldVal) {},
-      deep: true
+      const _this = this;
+      _this.cronText = _this.value;
+      _this.$emit("resolved", {
+          resolved: "",
+          fieldName: _this.fieldName
+        });
     }
   },
   methods: {
@@ -150,6 +151,10 @@ export default {
         this.resetCards();
         this.cards[e.cardName].display = true;
         this.cards[e.cardName].resolved = e.resolved;
+        this.$emit("resolved", {
+          resolved: e.resolved,
+          fieldName: this.fieldName
+        });
         this.lastDisplayed = e.cardName;
         this.errorMsg = "";
       }
@@ -187,7 +192,10 @@ export default {
     chooseThisCard(cardName) {
       this.resetCards();
       this.cards[cardName].display = true;
-      this.lastDisplayed = cardName;
+      if (this.lastDisplayed !== cardName) {
+        this.lastDisplayed = cardName;
+        this.errorMsg = null;
+      }
     },
     isSelected(cardName) {
       return this.cards[cardName].display;

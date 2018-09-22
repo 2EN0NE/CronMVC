@@ -129,7 +129,70 @@ export default {
       return start + SPECIFIC_CHAR + step;
     },
     getResolvedMeaning() {
-      return `This is SLASH card test`;
+      const pre = this.resolvedPreText();
+      const body = this.resolvedBodyText();
+      return pre + body;
+    },
+    resolvedPreText() {
+      if (this.fieldName === "year") {
+        return "on ";
+      } else if (this.fieldName === "week") {
+        return "on ";
+      } else if (this.fieldName === "month") {
+        return "in ";
+      } else if (this.fieldName === "day") {
+        return "on ";
+      } else if (this.fieldName === "hour") {
+        return "past";
+      } else if (this.fieldName === "minute") {
+        return "at ";
+      } else if (this.fieldName === "second") {
+        return "at ";
+      }
+    },
+    resolvedBodyText() {
+      let startText = this.start;
+      let stepText = this.step + "th "
+      let fieldNameText = this.fieldName;
+      if (this.fieldName === "week") {
+        startText = this.mapWeekText(startText);
+        fieldNameText = "day-of-week";
+      } else if (this.fieldName === "month") {
+        startText = this.mapMonthText(startText);
+        fieldNameText = "day-of-month";
+      }
+      if("1th "===stepText){stepText = ""}
+      if("2th "===stepText){stepText = "2nd "}
+      if("3th "===stepText){stepText = "3rd "}
+      return `every ${stepText}${fieldNameText} from ${startText}`
+    },
+    mapWeekText(t) {
+      return [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ][t + ""];
+    },
+    mapMonthText(t) {
+      return [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]["" + t];
     }
   }
 };
@@ -139,6 +202,6 @@ export default {
 @import "../../../../../public/variables.scss";
 
 .unactive {
-  color: $grey7;
+  color: $grey6;
 }
 </style>
