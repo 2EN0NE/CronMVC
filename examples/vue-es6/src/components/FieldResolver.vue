@@ -304,6 +304,7 @@ export default {
 }
 .card {
   padding: 5px;
+  cursor: pointer;
 }
 .card-seperate {
   border-bottom: 1px solid $grey1;
