@@ -8,7 +8,7 @@
     />
     <div class="fields-meaning">
       <FieldResolver field-name="second" 
-        v-model="secondText" :allowedSpecialChar="['*',',','-','/']" :defaultRange="[0,59]"
+        v-model="secondText" :allowedSpecialChar="['','*',',','-','/']" :defaultRange="[0,59]"
         @resolved="handleResolved"/>
       <FieldResolver field-name="minute" 
         v-model="minuteText" :allowedSpecialChar="['*',',','-','/']" :defaultRange="[0,59]"
@@ -26,7 +26,7 @@
         v-model="weekText" :allowedSpecialChar="['*',',','-','?','L','#']" :slashRange="[0,6]" :defaultRange="[0,7]"
         @resolved="handleResolved"/>
       <FieldResolver field-name="year" 
-        v-model="yearText" :allowedSpecialChar="['*',',','-']" :defaultRange="[1970,2038]"
+        v-model="yearText" :allowedSpecialChar="['','*',',','-']" :defaultRange="[1970,2038]"
         @resolved="handleResolved"/>
     </div>
   </div>

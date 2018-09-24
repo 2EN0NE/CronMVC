@@ -7,7 +7,6 @@
       <input class="separated-text" type="text" :value="value" v-on="listeners">
     </div>
     <div class="cards-box col-9" :class="{'cards-box-display':allCardsDisplayed}">
-      <!-- <EmptyCard /> -->
       <AsteriskCard id="ASTERISK" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('ASTERISK')}"
         v-if="allowCard('*')" v-show="isSelected('ASTERISK')"
         :field-name="fieldName" :value="cronText"
@@ -28,10 +27,26 @@
         :field-name="fieldName" :value="cronText" :range="commaRange||defaultRange"
         @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
         @click.native="chooseThisCard('COMMA')"/>
-      <!-- <QuestionCard /> -->
-      <!-- <LastCard /> -->
-      <!-- <WeekdayCard /> -->
-      <!-- <HashCard /> -->
+      <LastCard id="LAST" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('LAST')}"
+        v-if="allowCard('L')" v-show="isSelected('LAST')" 
+        :field-name="fieldName" :value="cronText"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('LAST')"/>
+      <WeekDayCard id="WEEKDAY" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('WEEKDAY')}"
+        v-if="allowCard('W')" v-show="isSelected('WEEKDAY')" 
+        :field-name="fieldName" :value="cronText"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('WEEKDAY')"/>
+      <HashCard id="HASH" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('HASH')}"
+        v-if="allowCard('#')" v-show="isSelected('HASH')" 
+        :field-name="fieldName" :value="cronText"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('HASH')"/>
+      <QuestionCard id="QUESTION" class="card" :class="{'card-seperate':allCardsDisplayed&&hasNextEle('QUESTION')}"
+        v-if="allowCard('?')" v-show="isSelected('QUESTION')"
+        :field-name="fieldName" :value="cronText"
+        @resolved="handleResolved" @update:card="cardUpdate" @error="errorMsg=$event"
+        @click.native="chooseThisCard('QUESTION')"/>
       <div class="error-message" v-if="errorMsg">{{errorMsg}}</div>
     </div>
     <div class="select-btn col-1" v-on:click="showAllCards">select</div>
@@ -43,6 +58,10 @@ import AsteriskCard from "./cards/AsteriskCard.vue";
 import CommaCard from "./cards/CommaCard.vue";
 import HyphenCard from "./cards/HyphenCard.vue";
 import SlashCard from "./cards/SlashCard.vue";
+import LastCard from "./cards/LastCard.vue";
+import WeekDayCard from "./cards/WeekDayCard.vue";
+import HashCard from "./cards/HashCard.vue";
+import QuestionCard from "./cards/QuestionCard.vue";
 
 const ASTERISK = "*";
 const COMMA = ",";
@@ -59,7 +78,11 @@ export default {
     AsteriskCard,
     SlashCard,
     HyphenCard,
-    CommaCard
+    CommaCard,
+    LastCard,
+    WeekDayCard,
+    HashCard,
+    QuestionCard
   },
   props: {
     fieldName: {
@@ -132,9 +155,9 @@ export default {
       const _this = this;
       _this.cronText = _this.value;
       _this.$emit("resolved", {
-          resolved: "",
-          fieldName: _this.fieldName
-        });
+        resolved: "",
+        fieldName: _this.fieldName
+      });
     }
   },
   methods: {
